@@ -17,6 +17,7 @@ mongoose.connect('mongodb+srv://nicolasruiz:nicolas123@cluster0.2996l.mongodb.ne
 
     if(err){
         console.log("NO CONECTA")
+        process.exit();
     }
     app.listen(5000, () => {
 

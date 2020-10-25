@@ -43,29 +43,52 @@ function buscar(req, res) {
 function buscarPorID(req, res) {
 
     let idpersona = req.params.id
-    Persona.findById(idpersona,(err,persona)=>{
-        if(err) return res.status(500).send({message:'error al realizar la peticion'})
-        if(!persona) return res.status(404).send({message:'Error la persona no existe'})
+    Persona.findById(idpersona, (err, persona) => {
+        if (err) return res.status(500).send({ message: 'error al realizar la peticion' })
+        if (!persona) return res.status(404).send({ message: 'Error la persona no existe' })
 
-         res.status(200).send({persona})
-     })
+        res.status(200).send({ persona })
+    })
 }
 
 function todos(req, res) {
 
-    Persona.find({},(err,persona)=>{
-        if(err) return res.status(500).send({message:'error al realizar la peticion'})
-        if(!persona) return res.status(404).send({message:'Error la persona no existe'})
+    Persona.find({}, (err, persona) => {
+        if (err) return res.status(500).send({ message: "error al realizar la peticion ${err}" })
+        if (!persona) return res.status(404).send({ message: 'Error la persona no existe' })
 
-         res.status(200).send({persona})
-     })
+        res.status(200).send({ persona })
+    })
 }
 
+//FUNCIONES TALLER 2
+function actualizar(req, res) {
+    let idPersona = req.params.id
+    Persona.findByIdAndUpdate(idPersona, req.body, (err, persona) => {
+        
+        if (err) return res.status(401).send(`Error base de datos: ${err}`)
+        if(!persona) return res.status(404).send({ message: 'Error la persona no existe' })
+
+        res.status(200).send(`Datos modificados correctamente`)
+    })
+}
+
+function eliminar(req, res) {
+    let idPersona = req.params.id
+    Persona.findByIdAndRemove(idPersona, req.body, (err, persona) => {
+        if (err) return res.status(500).send({ message: 'error al realizar la peticion' })
+        if (!persona) return res.status(404).send({ message: 'Error la persona no existe' })
+
+        res.status(200).send(`Persona eliminada: ${persona}`)
+    })
+}
 
 // Exportamos las funciones en un objeto json para poder usarlas en otros fuera de este fichero
 module.exports = {
     guardar,
     buscar,
-    buscarPorID,todos
-    
+    buscarPorID,
+    todos,
+    actualizar,
+    eliminar
 };
